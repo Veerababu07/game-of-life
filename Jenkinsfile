@@ -1,5 +1,8 @@
 pipeline {
-    agent { node { label 'jdk-11-mvn' } }
+    agent { label 'jdk-11-mvn' }
+    environment { 
+        JAVA_HOME = "/usr/lib/jvm/java-8-openjdk-amd64"
+    }
     stages {
         stage ('vcs') {
             steps {
@@ -14,19 +17,45 @@ pipeline {
         }
         stage ('artifacts') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar'
+                archiveArtifacts artifacts: '**/target/*.jar'
             }
         }
-        stage ('Artifactory configuration') {
+        stage ('junits') {
             steps {
-                rtServer (
-                    id: "namaddalodi",
-                    url: "https://veerababu08.jfrog.io",
-                    credentialsId: "veerababu.uppala07@gmail.com"
+                junit '**/surefire-reports/*.xml'
+            }
+        }
+        
+        stage ('artifactory-configuration') {
+            steps {
+                rtMavenDeployer (
+                    id : 'gadida_guddu',
+                    releaseRepo : 'default-libs-release-local',
+                    snapshotRepo : 'default-libs-snapshot-local',
+                    serverId : 'namaddalodi'
+
                 )
             }
         }
-    }
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'ubuntu', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'package',
+                    deployerId: "gadida_guddu"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "namaddalodi"
+                )
+            }
+        }
+        }
     post {
         always {
             echo 'Job completed'
@@ -43,4 +72,4 @@ pipeline {
             junit '**/surefire-reports/*.xml'
         }
     }
-}    
+}
