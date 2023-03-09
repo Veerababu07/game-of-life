@@ -9,7 +9,6 @@ trigger:
 jobs:
   - job: software_installations
     displayName: openjdk11
-    continueOnError: "false"
     steps:
       - task: Maven@3
         inputs:
