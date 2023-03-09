@@ -4,7 +4,7 @@ pool:
   name: "Azure pipelines"
 
 trigger: 
-  - main
+  - master
 
 jobs:
   - job: software_installations
