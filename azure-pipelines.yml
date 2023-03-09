@@ -15,8 +15,6 @@ jobs:
         inputs:
           packagetype: 'mvn'
           version: latest
-
-jobs:
   - job: Build_job
     displayName : springpet-clinic
     dependsOn: software_installations
