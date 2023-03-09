@@ -11,7 +11,7 @@ jobs:
     displayName: openjdk11
     continueOnError: "false"
     steps:
-      - task: Maven@4
+      - task: Maven@3
         inputs:
           packagetype: 'mvn'
           version: JDKVersion
