@@ -14,14 +14,13 @@ jobs:
       - task: Maven@4
         inputs:
           packagetype: 'mvn'
-          version: latest
+          version: JDKVersion
   - job: Build_job
     displayName : springpet-clinic
     dependsOn: software_installations
-    condition: succeeded()
     steps:
       - task: Maven@4
         inputs: 
           command: "mvn package"
-          
+          mavenPOMFile: pom.xml.
   
