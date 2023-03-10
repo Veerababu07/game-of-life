@@ -1,0 +1,19 @@
+pool: 
+  name: "Azure pipelines"
+  vmImage: "ubuntu-22.04"
+
+trigger:
+  - master
+
+jobs:
+  - job: myjob
+    displayName: task1
+    steps:
+      - task: Maven@3
+        inputs:
+         mavenPOMFile: 'pom.xml'
+         goals: package
+         javaHomeOption: 'JDKVersion'
+    steps:
+      - script: 
+          echo hello world
